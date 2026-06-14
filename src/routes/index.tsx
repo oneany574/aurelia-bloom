@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowUpRight, Menu, Plus } from "lucide-react";
+import { ArrowUpRight, Plus } from "lucide-react";
 
-import { SmoothScroll } from "@/components/SmoothScroll";
+import { SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/Reveal";
+import { Testimonials } from "@/components/site/Testimonials";
+import { FAQ } from "@/components/site/FAQ";
+import { FoodOrderCTA } from "@/components/site/FoodOrderCTA";
+import { openBookingModal } from "@/lib/booking-modal";
 
 import heroImg from "@/assets/hero.jpg";
 import spaImg from "@/assets/spa.jpg";
@@ -17,10 +21,26 @@ import ritualImg from "@/assets/ritual.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aurelia Wellness Resort — A touch of nature, silence, and slow luxury" },
-      { name: "description", content: "Thermal pools, forest rituals, private villas, and refined gastronomy in the heart of an ancient forest." },
-      { property: "og:title", content: "Aurelia Wellness Resort" },
-      { property: "og:description", content: "A touch of nature, silence, and slow luxury." },
+      { title: "Maya Devi Resort | Hotel Resort, Food Delivery, Pool & Events" },
+      { name: "description", content: "Visit Maya Devi Resort for resort stays, food delivery, swimming pool, events, family gatherings, and celebrations." },
+      { property: "og:title", content: "Maya Devi Resort" },
+      { property: "og:description", content: "Hotel resort, food delivery, swimming pool and events — always open." },
+      { property: "og:url", content: "/" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Resort",
+          name: "Maya Devi Resort",
+          telephone: "+977 984-7062177",
+          email: "mayadeviresort@gmail.com",
+          openingHours: "Mo-Su 00:00-23:59",
+          servesCuisine: ["Nepali", "Momo", "Chowmein"],
+        }),
+      },
     ],
   }),
   component: Index,
@@ -28,42 +48,20 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <SmoothScroll>
-      <main className="relative bg-background text-foreground">
-        <Nav />
-        <Hero />
-        <Marquee />
-        <Intro />
-        <Experiences />
-        <SpaRitual />
-        <Suites />
-        <Gastronomy />
-        <Forest />
-        <Booking />
-        <Footer />
-      </main>
-    </SmoothScroll>
-  );
-}
-
-/* ---------- NAV ---------- */
-function Nav() {
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
-      <div className="flex items-center justify-between px-6 md:px-10 py-6 text-cream">
-        <a href="#" className="font-display text-xl tracking-wider">Aurelia<span className="text-accent">.</span></a>
-        <nav className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.28em]">
-          <a href="#rooms" className="underline-grow">Suites</a>
-          <a href="#spa" className="underline-grow">Spa</a>
-          <a href="#dining" className="underline-grow">Dining</a>
-          <a href="#forest" className="underline-grow">The Forest</a>
-        </nav>
-        <button className="flex items-center gap-3 text-[11px] uppercase tracking-[0.28em]">
-          <span className="hidden sm:inline">Menu</span>
-          <Menu size={18} strokeWidth={1.2} />
-        </button>
-      </div>
-    </header>
+    <SiteLayout>
+      <Hero />
+      <Marquee />
+      <Intro />
+      <Experiences />
+      <SpaRitual />
+      <Suites />
+      <Gastronomy />
+      <FoodOrderCTA />
+      <Testimonials />
+      <Forest />
+      <FAQ />
+      <Booking />
+    </SiteLayout>
   );
 }
 
@@ -77,7 +75,7 @@ function Hero() {
   return (
     <section ref={ref} className="relative h-[100svh] w-full overflow-hidden">
       <motion.div style={{ y, scale }} className="absolute inset-0">
-        <img src={heroImg} alt="Aurelia resort at dusk" className="h-full w-full object-cover" />
+        <img src={heroImg} alt="Maya Devi Resort at dusk" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-background" />
       </motion.div>
 
@@ -88,10 +86,10 @@ function Hero() {
           transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-5xl"
         >
-          <span className="eyebrow"><span className="rule" />Est. MCMXCVIII — Aurelia Resort</span>
+          <span className="eyebrow"><span className="rule" />Maya Devi Resort · Always Open</span>
           <h1 className="mt-6 font-display text-[14vw] md:text-[8.5vw] leading-[0.92] text-cream text-balance italic">
-            A touch of <em className="text-accent">nature</em>,<br />
-            silence, and slow luxury.
+            Stay, dine and <em className="text-accent">celebrate</em><br />
+            with warm hospitality.
           </h1>
         </motion.div>
 
@@ -102,15 +100,15 @@ function Hero() {
           className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-6 sm:flex sm:items-end sm:justify-between"
         >
           <p className="max-w-sm text-sm leading-relaxed text-cream/80">
-            A wellness retreat hidden in an ancient forest — thermal pools, private villas, and rituals crafted in silence.
+            A welcoming hotel resort for rooms, food delivery, swimming pool, family gatherings and events.
           </p>
-          <a
-            href="#booking"
+          <button
+            onClick={() => openBookingModal()}
             className="group inline-flex items-center gap-3 border border-cream/30 px-6 py-4 text-[11px] uppercase tracking-[0.3em] text-cream transition hover:border-accent hover:text-accent"
           >
-            Reserve Your Stay
+            Book Your Stay
             <ArrowUpRight size={16} className="transition group-hover:rotate-45" strokeWidth={1.2} />
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>
@@ -119,7 +117,7 @@ function Hero() {
 
 /* ---------- MARQUEE ---------- */
 function Marquee() {
-  const items = ["Thermal Pools", "Forest Rituals", "Private Villas", "Slow Dining", "Silent Spa", "Wild Sauna"];
+  const items = ["Resort Stay", "Food Delivery", "Swimming Pool", "Family Gatherings", "Birthdays", "Events", "Always Open"];
   const row = [...items, ...items];
   return (
     <div className="border-y border-border/60 py-8 overflow-hidden">
@@ -142,16 +140,16 @@ function Intro() {
         <Reveal className="col-span-12 md:col-span-2 font-display text-3xl md:text-4xl text-accent italic">I</Reveal>
         <div className="col-span-12 md:col-span-7 md:col-start-4">
           <Reveal>
-            <span className="eyebrow"><span className="rule" />The Idea</span>
+            <span className="eyebrow"><span className="rule" />The Resort</span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-8 font-display text-4xl md:text-6xl leading-[1.05] text-balance">
-              An estate for those who measure luxury <em className="text-accent">not in gold</em>, but in stillness — where mornings open with mist and evenings end with fire.
+              A welcoming hotel resort designed for relaxation, <em className="text-accent">family gatherings</em>, food, events and memorable stays.
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-10 max-w-xl text-sm leading-relaxed text-muted-foreground">
-              Aurelia was conceived as the quiet counter-weight to a loud world. Twenty-two villas, three thermal pools, and one ancient forest — composed with restraint, devoted to the body and the breath.
+              With a friendly environment, resort-style hospitality and always-open service, Maya Devi Resort offers guests a comfortable place to enjoy leisure, food, swimming and celebrations.
             </p>
           </Reveal>
         </div>
@@ -160,20 +158,20 @@ function Intro() {
   );
 }
 
-/* ---------- EXPERIENCES (image cards with parallax) ---------- */
+/* ---------- EXPERIENCES ---------- */
 function Experiences() {
   const items = [
-    { num: "II", title: "Forest Spa", body: "Stone baths heated by ancient wood-fire, surrounded by silence.", img: spaImg },
-    { num: "III", title: "Wild Sauna", body: "A cedar-walled retreat opening onto the trees and the dawn.", img: saunaImg },
-    { num: "IV", title: "Ritual Treatments", body: "Hand-blended oils, warm stones, and slow, attentive hands.", img: ritualImg },
+    { num: "II", title: "Swimming Pool", body: "A refreshing pool for relaxing days with family and friends.", img: spaImg },
+    { num: "III", title: "Food & Delivery", body: "Hot, fresh meals served on-site or delivered free, 11 AM – 6 PM.", img: diningImg },
+    { num: "IV", title: "Events & Celebrations", body: "From birthdays to family gatherings — a warm space for every moment.", img: ritualImg },
   ];
   return (
     <section id="spa" className="px-6 md:px-10 py-24">
       <div className="grid grid-cols-12 gap-6 mb-16">
-        <Reveal className="col-span-12 md:col-span-6">
-          <span className="eyebrow"><span className="rule" />Experiences</span>
+        <Reveal className="col-span-12 md:col-span-7">
+          <span className="eyebrow"><span className="rule" />What we offer</span>
           <h2 className="mt-6 font-display text-5xl md:text-7xl leading-[0.95] text-balance">
-            Rituals for the body, <em className="text-accent">silence</em> for the mind.
+            More than a stay, a <em className="text-accent">resort experience</em>.
           </h2>
         </Reveal>
       </div>
@@ -215,7 +213,7 @@ function ParallaxCard({ img, title, num, body }: { img: string; title: string; n
   );
 }
 
-/* ---------- SPA RITUAL (full-bleed editorial) ---------- */
+/* ---------- SPA RITUAL (manifesto) ---------- */
 function SpaRitual() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -223,19 +221,19 @@ function SpaRitual() {
   return (
     <section ref={ref} className="relative h-[120vh] my-24 overflow-hidden">
       <motion.div style={{ y }} className="absolute inset-0 -top-[15%] h-[130%]">
-        <img src={natureImg} alt="Ancient forest in mist" className="h-full w-full object-cover" loading="lazy" />
+        <img src={natureImg} alt="Resort surroundings" className="h-full w-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-background/40" />
       </motion.div>
       <div className="relative z-10 h-full flex items-center px-6 md:px-10">
         <div className="max-w-3xl">
-          <Reveal><span className="eyebrow"><span className="rule" />Manifesto</span></Reveal>
+          <Reveal><span className="eyebrow"><span className="rule" />Our Promise</span></Reveal>
           <Reveal delay={0.1}>
             <p className="mt-8 font-display text-3xl md:text-5xl leading-[1.15] text-cream italic text-balance">
-              "We do not ask the forest to be quieter. We ask ourselves to listen more carefully."
+              "Maya Devi Resort is a home away from home — a place where food, family and good times come together."
             </p>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="mt-8 text-xs uppercase tracking-[0.32em] text-accent">— Iren Aurelius, Founder</p>
+            <p className="mt-8 text-xs uppercase tracking-[0.32em] text-accent">— The Maya Devi Team</p>
           </Reveal>
         </div>
       </div>
@@ -250,23 +248,26 @@ function Suites() {
       <div className="grid grid-cols-12 gap-6 md:gap-10 items-start">
         <Reveal className="col-span-12 md:col-span-5 md:sticky md:top-32">
           <span className="font-display italic text-accent text-2xl">V</span>
-          <span className="eyebrow ml-4"><span className="rule" />Suites & Villas</span>
+          <span className="eyebrow ml-4"><span className="rule" />Rooms & Stay</span>
           <h2 className="mt-8 font-display text-5xl md:text-7xl leading-[0.95] text-balance">
-            Rooms that <em className="text-accent">breathe</em> with the trees.
+            Comfortable rooms for <em className="text-accent">every guest</em>.
           </h2>
           <p className="mt-8 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Twenty-two villas dressed in oak, linen and stone — each with its own fire, its own bath, and a long window facing the wild.
+            From standard rooms to family suites — we have a space for couples, families and groups.
           </p>
-          <a href="#" className="mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-cream underline-grow">
-            View all suites <ArrowUpRight size={14} strokeWidth={1.2} />
-          </a>
+          <button
+            onClick={() => openBookingModal("Room Booking")}
+            className="mt-10 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-cream underline-grow"
+          >
+            Inquire about rooms <ArrowUpRight size={14} strokeWidth={1.2} />
+          </button>
         </Reveal>
 
         <div className="col-span-12 md:col-span-7 grid gap-10">
           {[
-            { name: "Forest Villa", num: "01", size: "85m²", img: suiteImg },
-            { name: "Atrium Suite", num: "02", size: "62m²", img: spaImg },
-            { name: "Stone Retreat", num: "03", size: "110m²", img: saunaImg },
+            { name: "Standard Room", num: "01", size: "2 guests", img: suiteImg },
+            { name: "Family Room", num: "02", size: "4 guests", img: spaImg },
+            { name: "Deluxe Room", num: "03", size: "2–3 guests", img: saunaImg },
           ].map((r, i) => (
             <Reveal key={r.name} delay={i * 0.1}>
               <article className="group grid grid-cols-12 gap-4 items-end">
@@ -281,7 +282,7 @@ function Suites() {
                 <div className="col-span-12 sm:col-span-4 pb-3">
                   <span className="font-display italic text-accent">{r.num}</span>
                   <h3 className="mt-3 font-display text-3xl">{r.name}</h3>
-                  <p className="mt-2 text-xs uppercase tracking-[0.28em] text-muted-foreground">{r.size} · 2 guests</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.28em] text-muted-foreground">{r.size}</p>
                 </div>
               </article>
             </Reveal>
@@ -298,29 +299,29 @@ function Gastronomy() {
     <section id="dining" className="px-6 md:px-10 py-32 bg-secondary text-secondary-foreground">
       <div className="grid grid-cols-12 gap-6 md:gap-10 items-center">
         <Reveal className="col-span-12 md:col-span-6 order-2 md:order-1">
-          <img src={diningImg} alt="Tasting menu plate" loading="lazy" className="w-full h-[640px] object-cover" />
+          <img src={diningImg} alt="Resort plate" loading="lazy" className="w-full h-[640px] object-cover" />
         </Reveal>
         <div className="col-span-12 md:col-span-5 md:col-start-8 order-1 md:order-2">
           <Reveal>
             <span className="font-display italic text-accent text-2xl">VI</span>
-            <span className="eyebrow ml-4"><span className="rule" />Gastronomy</span>
+            <span className="eyebrow ml-4"><span className="rule" />Kitchen</span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-8 font-display text-5xl md:text-6xl leading-[0.95] text-cream text-balance">
-              A table set by the <em className="text-accent">season</em>.
+              Fresh food, made <em className="text-accent">in-house</em>.
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-8 text-sm leading-relaxed text-cream/70 max-w-md">
-              Eight courses composed each morning from the kitchen garden and the surrounding forest — wild herbs, slow-cooked roots, smoke from cedar, honey from the meadow.
+              Nepali sets, momo, chowmein, fried rice, family combos and resort specials — served at the resort or delivered to your door.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
             <ul className="mt-10 space-y-4 max-w-md">
               {[
-                ["Cedar smoked beetroot", "honey · sorrel · juniper"],
-                ["Wood-fired trout", "burnt butter · forest mushrooms"],
-                ["Birch sap sorbet", "ash · cream · pollen"],
+                ["Chicken Momo", "house chutney · steamed fresh"],
+                ["Thakali Khana Set", "daal · bhat · tarkari · achar"],
+                ["Family Combo Platter", "momo · chowmein · rice · drinks"],
               ].map(([t, sub]) => (
                 <li key={t} className="flex items-baseline justify-between gap-4 border-b border-cream/15 pb-4">
                   <span className="font-display text-xl text-cream">{t}</span>
@@ -343,7 +344,7 @@ function Forest() {
         <Reveal className="col-span-12 md:col-span-10 md:col-start-2 text-center">
           <span className="eyebrow"><span className="rule" />The Estate</span>
           <p className="mt-10 font-display text-4xl md:text-7xl leading-[1.05] text-balance italic">
-            Three hundred hectares of wild forest, two thermal springs, one ancient promise — to leave you <em className="text-accent">softer</em> than we found you.
+            A welcoming resort for stays, swims, food and celebrations — built for the <em className="text-accent">moments that matter</em>.
           </p>
         </Reveal>
       </div>
@@ -359,70 +360,24 @@ function Booking() {
         <Reveal className="col-span-12 md:col-span-7">
           <span className="eyebrow"><span className="rule" />Reservations</span>
           <h2 className="mt-6 font-display text-5xl md:text-8xl leading-[0.9] text-balance">
-            Begin your <em className="text-accent">stay</em>.
+            Begin your <em className="text-accent">visit</em>.
           </h2>
         </Reveal>
         <Reveal className="col-span-12 md:col-span-5" delay={0.15}>
-          <form className="grid grid-cols-2 gap-4">
-            {[
-              ["Arrival", "DD / MM / YYYY"],
-              ["Departure", "DD / MM / YYYY"],
-              ["Guests", "2 Adults"],
-              ["Villa type", "Forest Villa"],
-            ].map(([label, ph]) => (
-              <label key={label} className="col-span-1 flex flex-col gap-2 border-b border-border pb-3">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{label}</span>
-                <input placeholder={ph} className="bg-transparent text-sm text-cream placeholder:text-cream/40 outline-none" />
-              </label>
-            ))}
-            <button className="col-span-2 mt-6 group inline-flex items-center justify-between gap-3 border border-accent bg-accent/0 px-6 py-5 text-[11px] uppercase tracking-[0.3em] text-cream transition hover:bg-accent hover:text-background">
-              Check Availability
+          <div className="flex flex-col gap-4">
+            <p className="text-sm text-muted-foreground">
+              Send a quick inquiry — our team will confirm availability and call you back.
+            </p>
+            <button
+              onClick={() => openBookingModal()}
+              className="group inline-flex items-center justify-between gap-3 border border-accent bg-accent/0 px-6 py-5 text-[11px] uppercase tracking-[0.3em] text-cream transition hover:bg-accent hover:text-background"
+            >
+              Open Booking Inquiry
               <ArrowUpRight size={16} className="transition group-hover:rotate-45" strokeWidth={1.2} />
             </button>
-          </form>
+          </div>
         </Reveal>
       </div>
     </section>
-  );
-}
-
-/* ---------- FOOTER ---------- */
-function Footer() {
-  return (
-    <footer className="px-6 md:px-10 pt-24 pb-10 border-t border-border/60">
-      <div className="grid grid-cols-12 gap-6 md:gap-10">
-        <div className="col-span-12 md:col-span-6">
-          <h3 className="font-display text-6xl md:text-9xl leading-[0.85] italic">
-            Aurelia<span className="text-accent">.</span>
-          </h3>
-          <p className="mt-6 max-w-sm text-sm text-muted-foreground">A touch of nature, silence, and slow luxury.</p>
-        </div>
-        <div className="col-span-6 md:col-span-2">
-          <p className="eyebrow">Contact</p>
-          <ul className="mt-6 space-y-2 text-sm text-cream/80">
-            <li>+33 4 80 00 12 00</li>
-            <li>stay@aurelia.com</li>
-          </ul>
-        </div>
-        <div className="col-span-6 md:col-span-2">
-          <p className="eyebrow">Address</p>
-          <ul className="mt-6 space-y-2 text-sm text-cream/80">
-            <li>Forêt d'Aurelia</li>
-            <li>Vallée des Mille Sources</li>
-          </ul>
-        </div>
-        <div className="col-span-12 md:col-span-2">
-          <p className="eyebrow">Follow</p>
-          <ul className="mt-6 space-y-2 text-sm text-cream/80">
-            <li><a href="#" className="underline-grow">Instagram</a></li>
-            <li><a href="#" className="underline-grow">Journal</a></li>
-          </ul>
-        </div>
-      </div>
-      <div className="mt-20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-        <span>© MMXXVI Aurelia Wellness Resort</span>
-        <span>Designed in silence.</span>
-      </div>
-    </footer>
   );
 }

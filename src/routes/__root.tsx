@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,11 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Aurelia Wellness Resort — A touch of nature, silence, and slow luxury" },
-      { name: "description", content: "Aurelia is a luxury wellness resort of thermal pools, forest rituals, private villas and refined gastronomy — designed for slow living." },
-      { property: "og:title", content: "Aurelia Wellness Resort" },
-      { property: "og:description", content: "A touch of nature, silence, and slow luxury." },
+      { title: "Maya Devi Resort | Hotel Resort, Food Delivery, Pool & Events" },
+      { name: "description", content: "Visit Maya Devi Resort for resort stays, food delivery, swimming pool, events, family gatherings, and celebrations." },
+      { property: "og:title", content: "Maya Devi Resort" },
+      { property: "og:description", content: "Hotel resort, food delivery, swimming pool and events — always open." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Maya Devi Resort" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -120,6 +122,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster position="top-center" />
     </QueryClientProvider>
   );
 }

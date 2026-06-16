@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { openBookingModal } from "@/lib/booking-modal";
 import { eventTypes } from "@/lib/data/events";
-import ritualImg from "@/assets/ritual.jpg";
+import eventsHeroImg from "@/assets/events-hero.jpg";
 
 export const Route = createFileRoute("/events")({
   head: () => ({

@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/Reveal";
+import { ConferenceGallery } from "@/components/site/ConferenceGallery";
 import { openBookingModal } from "@/lib/booking-modal";
 import { eventTypes } from "@/lib/data/events";
 import eventsHeroImg from "@/assets/events-hero.jpg";
@@ -67,6 +68,8 @@ function EventsPage() {
           ))}
         </div>
       </section>
+
+      <ConferenceGallery />
 
       <section className="px-6 md:px-10 py-32 border-t border-border/60 text-center">
         <Reveal>

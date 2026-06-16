@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { openBookingModal } from "@/lib/booking-modal";
 import { eventTypes } from "@/lib/data/events";
-import ritualImg from "@/assets/ritual.jpg";
+import eventsHeroImg from "@/assets/events-hero.jpg";
 
 export const Route = createFileRoute("/events")({
   head: () => ({
@@ -27,7 +27,7 @@ function EventsPage() {
         eyebrow="Events"
         title={<>Events & <em className="text-accent">celebrations</em></>}
         description="A lively and comfortable setting for birthdays, gatherings, cultural programs and entertainment nights."
-        image={ritualImg}
+        image={eventsHeroImg}
       />
 
       <section className="px-6 md:px-10 py-24">

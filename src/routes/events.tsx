@@ -27,7 +27,7 @@ function EventsPage() {
         eyebrow="Events"
         title={<>Events & <em className="text-accent">celebrations</em></>}
         description="A lively and comfortable setting for birthdays, gatherings, cultural programs and entertainment nights."
-        image={ritualImg}
+        image={eventsHeroImg}
       />
 
       <section className="px-6 md:px-10 py-24">

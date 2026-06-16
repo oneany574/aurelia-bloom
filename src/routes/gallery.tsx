@@ -57,6 +57,21 @@ function GalleryPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, items.length]);
 
+  // Preload neighbors for instant prev/next transitions
+  useEffect(() => {
+    if (!open || index === null || items.length === 0) return;
+    const neighbors = [
+      items[(index + 1) % items.length],
+      items[(index - 1 + items.length) % items.length],
+    ];
+    neighbors.forEach((n) => {
+      if (!n) return;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = n.src;
+    });
+  }, [open, index, items]);
+
   return (
     <SiteLayout>
       <PageHero
